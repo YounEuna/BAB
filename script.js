@@ -61,7 +61,12 @@ function getToday() {
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
-    return `${yyyy}${mm}${dd}`;
+    return `${yyyy}-${mm}-${dd}`; // type=date 기본값용 (YYYY-MM-DD)
+}
+
+function dateToYYYYMMDD(dateStr) {
+    // 'YYYY-MM-DD' → 'YYYYMMDD'
+    return dateStr.replace(/-/g, '');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -125,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const school = JSON.parse(selected);
-        const mealDate = mealDateInput.value.trim() || getToday();
+        const mealDate = dateToYYYYMMDD(mealDateInput.value);
         try {
             const data = await fetchMeal(school.officeCode, school.schoolCode, mealDate);
             result.textContent = parseMealData(data);
