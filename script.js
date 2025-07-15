@@ -19,16 +19,12 @@ const EDUCATION_OFFICES = [
     { code: 'T10', name: '제주특별자치도교육청' }
 ];
 
-// API 키를 api.txt에서 읽어오는 함수
-async function getApiKey() {
-    const res = await fetch('api.txt');
-    return (await res.text()).trim();
-}
+// API 키를 직접 하드코딩
+const API_KEY = 'c794d0ae04e94ced8879962122d4cec2';
 
 // NEIS 학교 검색 API (공공데이터포털)
 async function searchSchoolsByName(name, officeCode) {
-    const apiKey = await getApiKey();
-    const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${apiKey}&Type=json&ATPT_OFCDC_SC_CODE=${officeCode}&SCHUL_NM=${encodeURIComponent(name)}`;
+    const url = `https://open.neis.go.kr/hub/schoolInfo?KEY=${API_KEY}&Type=json&ATPT_OFCDC_SC_CODE=${officeCode}&SCHUL_NM=${encodeURIComponent(name)}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('학교 검색 API 요청 실패');
     const data = await res.json();
@@ -38,8 +34,7 @@ async function searchSchoolsByName(name, officeCode) {
 
 // 급식 정보 조회 함수 (NEIS)
 async function fetchMeal(officeCode, schoolCode, mealDate) {
-    const apiKey = await getApiKey();
-    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${apiKey}&ATPT_OFCDC_SC_CODE=${officeCode}&SD_SCHUL_CODE=${schoolCode}&MLSV_YMD=${mealDate}&Type=json`;
+    const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&ATPT_OFCDC_SC_CODE=${officeCode}&SD_SCHUL_CODE=${schoolCode}&MLSV_YMD=${mealDate}&Type=json`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('급식 API 요청 실패');
     const data = await res.json();
